@@ -16,12 +16,9 @@ public class Ball {
     public final int ball_height = 50;
 
     private final double g = 9.80665; // gravity acceleration on the Earth
-    private final double dt = 0.005;
+    private final double dt = 0.005;  // small time interval for calculating values
 
     //public double alpha = Math.toRadians(39);
-
-    public double x0 = 100;     // x coordinate of the ball
-    public double y0 = 300;     // y coordinate of the ball
 
     public double dr0 = 1;
 

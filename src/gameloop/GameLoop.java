@@ -81,6 +81,7 @@ public class GameLoop {
     }
 
     private void loadGame(Background bgrd, Ball b, Cannon c, WallsAndRoad w, JFrame root) {
+        // Load current gameloop after clicked button.
 
         background.setIcon(bgrd.backgroundimg);
 
@@ -113,6 +114,11 @@ public class GameLoop {
     }
 
     private boolean tick(Ball b, JFrame root, WallsAndRoad w, Cannon c, Basket basket) {
+        /*
+            Do this every timeInterval = 1 ms (by Runnable lambdaRun l137 func after pressed SPACE.
+            Get new values from Ball calc. functions, check for win for every integer i, if win - exit from loop.
+            Else: i = i + 1 and check for win new values.
+         */
 
         double x = b.getX(i, b.dr0, w, c,basket);
         double y = b.getY(i, b.dr0, w, c,basket);
@@ -131,6 +137,7 @@ public class GameLoop {
     }
 
     private Runnable lambdaRun(Ball b, JFrame root, WallsAndRoad w, Cannon c, Basket basket) {
+        // Timer function.
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

@@ -1,3 +1,7 @@
+/*
+    This will be shows by updating value of start velocity of the ball (pressed key W or S)
+ */
+
 package objects;
 
 import javax.swing.JFrame;
