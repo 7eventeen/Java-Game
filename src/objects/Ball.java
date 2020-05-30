@@ -41,7 +41,7 @@ public class Ball {
         return y;
     }
 
-    public double getX(int i, double dr0, WallsAndRoad w, Cannon c) {
+    public double getX(int i, double dr0, WallsAndRoad w, Cannon c, Basket basket) {
         double t = 0;
         t = dt * i;
         double x = moveX(t, c.angle);
@@ -55,7 +55,7 @@ public class Ball {
         return x;
     }
 
-    public double getY(int i, double dr0, WallsAndRoad w, Cannon c) {
+    public double getY(int i, double dr0, WallsAndRoad w, Cannon c, Basket basket) {
         double t = 0;
         t = dt * i;
         double y = moveY(t, c.angle);

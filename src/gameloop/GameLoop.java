@@ -19,7 +19,6 @@ public class GameLoop {
 
     private final long timeInterval = 1;
 
-    private Thread calculating = new Thread();
 
     private final JLabel background = new JLabel();
     private final JLabel label_ball = new JLabel();
@@ -62,11 +61,12 @@ public class GameLoop {
         Ball b = new Ball();
         Cannon c = new Cannon();
         WallsAndRoad w = new WallsAndRoad();
+        Basket basket = new Basket();
         loadGame(bgrd, b, c, w, root);
 
         addKeyListenerCannon(root, label_cannon, c);
         addKeyListenerStartVelocity(root, background, b);
-        addKeyListenerRun(root, b, w, c);
+        addKeyListenerRun(root, b, w, c, basket);
 
     }
 
@@ -97,6 +97,7 @@ public class GameLoop {
         background.add(label_wallox);
         background.add(label_walloy1);
         background.add(label_walloy2);
+        background.add(label_road);
 
         background.add(basket.initBasket(background));
         //background.remove(label_road);
@@ -105,10 +106,10 @@ public class GameLoop {
 
     }
 
-    private void tick(Ball b, JFrame root, WallsAndRoad w, Cannon c) {
+    private void tick(Ball b, JFrame root, WallsAndRoad w, Cannon c, Basket basket) {
 
-        double x = b.getX(i, b.dr0, w, c);
-        double y = b.getY(i, b.dr0, w, c);
+        double x = b.getX(i, b.dr0, w, c,basket);
+        double y = b.getY(i, b.dr0, w, c,basket);
 
         label_ball.setBounds((int) (x), (int) (y), b.ball_width, b.ball_height);
         root.repaint();
@@ -116,12 +117,12 @@ public class GameLoop {
         i++;
     }
 
-    private Runnable lambdaRun(Ball b, JFrame root, WallsAndRoad w, Cannon c) {
+    private Runnable lambdaRun(Ball b, JFrame root, WallsAndRoad w, Cannon c, Basket basket) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 while (true) {
-                    tick(b, root, w, c);
+                    tick(b, root, w, c, basket);
                     try {
                         Thread.sleep(timeInterval);
                     } catch (InterruptedException e) {
@@ -203,21 +204,21 @@ public class GameLoop {
 
     }
 
-    private void addKeyListenerRun(JFrame root, Ball b, WallsAndRoad w, Cannon c) {
+    private void addKeyListenerRun(JFrame root, Ball b, WallsAndRoad w, Cannon c, Basket basket) {
         // Init ball flying by pressed SPACE
         root.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 if (keyCode == KeyEvent.VK_SPACE) {
-                    Thread calculating = new Thread(lambdaRun(b, root, w, c));
+                    Thread calculating = new Thread(lambdaRun(b, root, w, c, basket));
                     calculating.start();
                 }
             }
         });
     }
 
-    
+
     private void debugClick(MouseEvent e) {
         int localX = e.getX();
         int localY = e.getY();
