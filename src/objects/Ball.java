@@ -51,7 +51,7 @@ public class Ball {
         if (x < 0) {
             x = -x;
         }
-        
+
         return x;
     }
 

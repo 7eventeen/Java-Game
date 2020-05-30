@@ -6,11 +6,7 @@ package gameloop;
 
 import com.sun.jdi.IntegerValue;
 
-import objects.Background;
-import objects.Ball;
-import objects.Cannon;
-import objects.ProgressBarOfStartVelocity;
-import objects.WallsAndRoad;
+import objects.*;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,6 +31,8 @@ public class GameLoop {
     private final JLabel label_walloy2 = new JLabel();
     private final JLabel label_road = new JLabel();
 
+    private final Basket basket = new Basket();
+
     ProgressBarOfStartVelocity progressBar = new ProgressBarOfStartVelocity();
 
     final int width;
@@ -46,6 +44,7 @@ public class GameLoop {
         this.width = width;
         this.height = height;
 
+
         root.getContentPane().removeAll();
 
         JPanel gamePanel = new JPanel();
@@ -54,12 +53,12 @@ public class GameLoop {
 
         background.setBounds(0, 0, width, height);
 
-
         background.add(label_ball);
 
         gamePanel.add(background);
         root.add(gamePanel);
         root.repaint();
+
 
         Background bgrd = new Background();
         Ball b = new Ball();
@@ -99,8 +98,8 @@ public class GameLoop {
         background.add(label_wallox);
         background.add(label_walloy1);
         background.add(label_walloy2);
-        background.add(label_road);
 
+        background.add(basket.initBasket(background));
         //background.remove(label_road);
 
         root.repaint();
