@@ -10,7 +10,7 @@ import objects.Background;
 import objects.Ball;
 import objects.Cannon;
 import objects.ProgressBarOfStartVelocity;
-import objects.Walls;
+import objects.WallsAndRoad;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,13 +18,12 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
+
+
 
 public class GameLoop {
 
-    private final long timeInterval = 5;
+    private final long timeInterval = 1;
 
     private Thread calculating = new Thread();
 
@@ -34,6 +33,7 @@ public class GameLoop {
     private final JLabel label_wallox = new JLabel();
     private final JLabel label_walloy1 = new JLabel();
     private final JLabel label_walloy2 = new JLabel();
+    private final JLabel label_road = new JLabel();
 
     ProgressBarOfStartVelocity progressBar = new ProgressBarOfStartVelocity();
 
@@ -64,15 +64,15 @@ public class GameLoop {
         Background bgrd = new Background();
         Ball b = new Ball();
         Cannon c = new Cannon();
-        Walls w = new Walls();
+        WallsAndRoad w = new WallsAndRoad();
         loadGame(bgrd, b, c, w, root);
 
         addKeyListenerCannon(root, label_cannon, c);
         addKeyListenerStartVelocity(root, background, b);
-        addKeyListenerRun(root, b);
+        addKeyListenerRun(root, b, w, c);
     }
 
-    private void loadGame(Background bgrd, Ball b, Cannon c, Walls w, JFrame root) {
+    private void loadGame(Background bgrd, Ball b, Cannon c, WallsAndRoad w, JFrame root) {
 
         background.setIcon(bgrd.backgroundimg);
 
@@ -91,33 +91,39 @@ public class GameLoop {
         label_walloy2.setBounds(w.walloy2_x, w.walloy2_y, w.walloy2_width, w.walloy2_height);
         label_walloy2.setIcon(w.walloy);
 
+        label_road.setBounds(w.road_x, w.road_y, w.road_width, w.road_height);
+        label_road.setIcon(w.wallox);
+
         background.add(label_cannon);
         background.add(label_ball);
         background.add(label_wallox);
         background.add(label_walloy1);
         background.add(label_walloy2);
+        background.add(label_road);
+
+        //background.remove(label_road);
 
         root.repaint();
 
     }
 
-    private void tick(List<ArrayList> coords, Ball b, JFrame root) {
-        ArrayList<Double> X = coords.get(0);
-        ArrayList<Double> Y = coords.get(1);
-        if (i >= Y.size()) {
-            return;
-        }
-        label_ball.setBounds( X.get(i).intValue(), Y.get(i).intValue(), b.ball_width, b.ball_height);
+    private void tick(Ball b, JFrame root, WallsAndRoad w, Cannon c) {
+
+        double x = b.getX(i, b.dr0, w, c);
+        double y = b.getY(i, b.dr0, w, c);
+
+        label_ball.setBounds((int) (x), (int) (y), b.ball_width, b.ball_height);
         root.repaint();
+
         i++;
     }
 
-    private Runnable lambdaRun(Ball b, JFrame root) {
+    private Runnable lambdaRun(Ball b, JFrame root, WallsAndRoad w, Cannon c) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 while (true) {
-                    tick(b.getCoordinates(b.dr0), b, root);
+                    tick(b, root, w, c);
                     try {
                         Thread.sleep(timeInterval);
                     } catch (InterruptedException e) {
@@ -182,14 +188,14 @@ public class GameLoop {
                         if (b.dr0 >= progressBar.MAX_SPEED) {
                             break;
                         }
-                        b.dr0 += 1;
+                        b.dr0 += progressBar.VEL_STEP;
                         progressBar.showOnTheBackground(root, background, b);
                         break;
                     case KeyEvent.VK_S:
-                        if (b.dr0 <= 1) {
+                        if (b.dr0 <= progressBar.VEL_STEP) {
                             break;
                         }
-                        b.dr0 -= 1;
+                        b.dr0 -= progressBar.VEL_STEP;
                         progressBar.showOnTheBackground(root, background, b);
                         break;
                 }
@@ -199,14 +205,14 @@ public class GameLoop {
 
     }
 
-    private void addKeyListenerRun(JFrame root, Ball b) {
+    private void addKeyListenerRun(JFrame root, Ball b, WallsAndRoad w, Cannon c) {
         // Init ball flying by pressed SPACE
         root.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 if (keyCode == KeyEvent.VK_SPACE) {
-                    Thread calculating = new Thread(lambdaRun(b, root));
+                    Thread calculating = new Thread(lambdaRun(b, root, w, c));
                     calculating.start();
                 }
             }

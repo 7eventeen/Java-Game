@@ -6,7 +6,8 @@ import javax.swing.JProgressBar;
 
 public class ProgressBarOfStartVelocity {
 
-    public final int MAX_SPEED = 20;
+    public final int MAX_SPEED = 200;
+    public final int VEL_STEP = 20;
     JProgressBar progressBar = new JProgressBar();
 
     public void showOnTheBackground(JFrame root, JLabel background, Ball b) {

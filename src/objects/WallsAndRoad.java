@@ -7,7 +7,7 @@ package objects;
 
 import javax.swing.ImageIcon;
 
-public class Walls {
+public class WallsAndRoad {
 
     public final ImageIcon wallox = new ImageIcon("src/res/wallx.png");
     public final ImageIcon walloy = new ImageIcon("src/res/wally.png");
@@ -25,7 +25,12 @@ public class Walls {
     public final int walloy2_x = 1265;
     public final int walloy2_y = 0;
     public final int walloy2_width = 13;
-    public final int walloy2_height = 570;
+    public final int walloy2_height = 575;
+
+    public final int road_x = 0;
+    public final int road_y = 550;
+    public final int road_width = 1280;
+    public final int road_height = 10;
 
 
 }
