@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 
 public class Ui {
@@ -42,6 +43,7 @@ public class Ui {
 
             }
         });
+
 
             // Exit from the program by clicking this
         buttontoexit.addActionListener(new ActionListener() {

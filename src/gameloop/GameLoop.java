@@ -8,13 +8,11 @@ import com.sun.jdi.IntegerValue;
 
 import objects.*;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
+import java.awt.event.MouseEvent;
 
 
 public class GameLoop {
@@ -69,6 +67,7 @@ public class GameLoop {
         addKeyListenerCannon(root, label_cannon, c);
         addKeyListenerStartVelocity(root, background, b);
         addKeyListenerRun(root, b, w, c);
+
     }
 
     private void loadGame(Background bgrd, Ball b, Cannon c, WallsAndRoad w, JFrame root) {
@@ -216,6 +215,14 @@ public class GameLoop {
                 }
             }
         });
+    }
+
+    
+    private void debugClick(MouseEvent e) {
+        int localX = e.getX();
+        int localY = e.getY();
+        System.out.println(localX);
+        System.out.println(localY);
     }
 
 }
