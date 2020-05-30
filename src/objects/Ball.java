@@ -5,10 +5,8 @@
 package objects;
 
 
-import javax.lang.model.type.ErrorType;
 import javax.swing.ImageIcon;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class Ball {
 
@@ -18,7 +16,7 @@ public class Ball {
     public final int ball_height = 50;
 
     private final double g = 9.80665; // gravity acceleration on the Earth
-    private final double dt = 0.05;
+    private final double dt = 0.005;
 
     //public double alpha = Math.toRadians(39);
 
@@ -112,6 +110,8 @@ public class Ball {
         }
         return y0;
     }
+
+
 
 
 }

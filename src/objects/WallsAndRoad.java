@@ -28,7 +28,8 @@ public class WallsAndRoad {
     public final int walloy2_height = 575;
 
     public final int road_x = 0;
-    public final int road_y = 550;
+    public final int road_y = 520
+            ;
     public final int road_width = 1280;
     public final int road_height = 10;
 

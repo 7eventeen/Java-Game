@@ -6,9 +6,17 @@ package gameloop;
 
 import com.sun.jdi.IntegerValue;
 
-import objects.*;
+import objects.Background;
+import objects.Ball;
+import objects.Basket;
+import objects.Cannon;
+import objects.ProgressBarOfStartVelocity;
+import objects.WallsAndRoad;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -19,6 +27,7 @@ public class GameLoop {
 
     private final long timeInterval = 1;
 
+    private ImageIcon congratulations = new ImageIcon("src/res/congratulations.png");
 
     private final JLabel background = new JLabel();
     private final JLabel label_ball = new JLabel();
@@ -27,6 +36,7 @@ public class GameLoop {
     private final JLabel label_walloy1 = new JLabel();
     private final JLabel label_walloy2 = new JLabel();
     private final JLabel label_road = new JLabel();
+    private final JLabel label_youAreWon = new JLabel();
 
     private final Basket basket = new Basket();
 
@@ -94,10 +104,6 @@ public class GameLoop {
 
         background.add(label_cannon);
         background.add(label_ball);
-        background.add(label_wallox);
-        background.add(label_walloy1);
-        background.add(label_walloy2);
-        background.add(label_road);
 
         background.add(basket.initBasket(background));
         //background.remove(label_road);
@@ -106,15 +112,22 @@ public class GameLoop {
 
     }
 
-    private void tick(Ball b, JFrame root, WallsAndRoad w, Cannon c, Basket basket) {
+    private boolean tick(Ball b, JFrame root, WallsAndRoad w, Cannon c, Basket basket) {
 
         double x = b.getX(i, b.dr0, w, c,basket);
         double y = b.getY(i, b.dr0, w, c,basket);
 
+        if (x > basket.x1k && x < basket.x1 && y > basket.y1) {
+            x = basket.x1 - (x - basket.x1);
+        }
+        if (x > basket.x1k && x < basket.x2k && y > basket.y1) {
+            return true;
+        }
         label_ball.setBounds((int) (x), (int) (y), b.ball_width, b.ball_height);
         root.repaint();
-
         i++;
+        return false;
+
     }
 
     private Runnable lambdaRun(Ball b, JFrame root, WallsAndRoad w, Cannon c, Basket basket) {
@@ -122,8 +135,15 @@ public class GameLoop {
             @Override
             public void run() {
                 while (true) {
-                    tick(b, root, w, c, basket);
+                    boolean p = tick(b, root, w, c, basket);
                     try {
+                        if (p) {
+                            label_youAreWon.setIcon(congratulations);
+                            label_youAreWon.setBounds(300, 200, 700, 300);
+                            background.add(label_youAreWon);
+                            root.repaint();
+                            return;
+                        }
                         Thread.sleep(timeInterval);
                     } catch (InterruptedException e) {
                         e.printStackTrace();

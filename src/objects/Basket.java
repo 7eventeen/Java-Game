@@ -1,18 +1,21 @@
 package objects;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.QuadCurve2D;
+import javax.swing.JLabel;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class Basket {
 
-    public final int basketx1 = 800;
-    public final int basketx2 = 925;
+    public final int x1 = 1105;
+    public final int x2 = 1280;
 
-    public final int baskety1 = 438;
-    public final int baskety2 = 563;
+    public final int x1k = 1140;
+    public final int x2k = 1260;
+
+    public final int y1 = 438;
+    public final int y2 = 550;
 
     public JLabel initBasket(JLabel background) {
         JLabel basket = new JLabel() {
@@ -22,13 +25,13 @@ public class Basket {
                 super.paint(g);
                 g2 = (Graphics2D)g;
                 g2.setColor(Color.RED);
-                g2.setStroke(new BasicStroke(7.0f));
+                g2.setStroke(new BasicStroke(15.0f));
                 g2.drawLine(0, 0, 0, 125);
-                g2.drawLine(0, 125, 125 ,125);
-                g2.drawLine(125, 125, 125, 0);
+                g2.drawLine(0, 125, 174 ,125);
+                g2.drawLine(175, 125, 174, 0);
             }
         };
-        basket.setBounds(800, 438, 400, 200);
+        basket.setBounds(1105, 425, 400, 200);
         return basket;
     }
 
